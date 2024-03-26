@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { ref, computed } from 'vue';
+
 const columns = [{
   key: 'id',
   label: 'ID'
@@ -14,68 +16,76 @@ const columns = [{
 }, {
   key: 'role',
   label: 'Role'
-}]
+}];
 
 const people = [{
   id: 1,
-  name: 'Lindsay Walton',
-  title: 'Front-end Developer',
-  email: 'lindsay.walton@example.com',
-  role: 'Member'
+    name: 'Lindsay Walton',
+    title: 'Front-end Developer',
+    email: 'lindsay.walton@example.com',
+    role: 'Member'
 }, {
   id: 2,
-  name: 'Courtney Henry',
-  title: 'Designer',
-  email: 'courtney.henry@example.com',
-  role: 'Admin'
+      name: 'Courtney Henry',
+      title: 'Designer',
+      email: 'courtney.henry@example.com',
+      role: 'Admin'
 }, {
   id: 3,
-  name: 'Tom Cook',
-  title: 'Director of Product',
-  email: 'tom.cook@example.com',
-  role: 'Member'
+      name: 'Tom Cook',
+      title: 'Director of Product',
+      email: 'tom.cook@example.com',
+      role: 'Member'
 }, {
   id: 4,
-  name: 'Whitney Francis',
-  title: 'Copywriter',
-  email: 'whitney.francis@example.com',
-  role: 'Admin'
+      name: 'Whitney Francis',
+      title: 'Copywriter',
+      email: 'whitney.francis@example.com',
+      role: 'Admin'
 }, {
   id: 5,
-  name: 'Leonard Krasner',
-  title: 'Senior Designer',
-  email: 'leonard.krasner@example.com',
-  role: 'Owner'
+      name: 'Leonard Krasner',
+      title: 'Senior Designer',
+      email: 'leonard.krasner@example.com',
+      role: 'Owner'
 }, {
   id: 6,
-  name: 'Floyd Miles',
-  title: 'Principal Designer',
-  email: 'floyd.miles@example.com',
-  role: 'Member'
-}]
+      name: 'Floyd Miles',
+      title: 'Principal Designer',
+      email: 'floyd.miles@example.com',
+      role: 'Member'
+}];
 
-const q = ref('')
+const q = ref('');
+const page = ref(1);
+const pageCount = 5;
 
 const filteredRows = computed(() => {
   if (!q.value) {
-    return people
+    return people;
   }
 
   return people.filter((person) => {
     return Object.values(person).some((value) => {
-      return String(value).toLowerCase().includes(q.value.toLowerCase())
-    })
-  })
-})
-</script>
+      return String(value).toLowerCase().includes(q.value.toLowerCase());
+    });
+  });
+});
 
+const rows = computed(() => {
+  return filteredRows.value.slice((page.value - 1) * pageCount, page.value * pageCount);
+});
+</script>
 <template>
-  <div class="border-2 border-solid border-inherit rounded-sm ml-100 justify-center">
-    <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700 place-content-center">
+  <div>
+    <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
       <UInput v-model="q" placeholder="Filter people..." />
     </div>
+    <UTable :rows="rows" />
 
-    <UTable :rows="filteredRows" :colu  mns="columns" />
+    <div class="flex justify-end px-3 py-3.5 border-t border-gray-200 dark:border-gray-700">
+      <UPagination v-model="page" :page-count="pageCount" :total="people.length" />
+    </div>
   </div>
 </template>
 

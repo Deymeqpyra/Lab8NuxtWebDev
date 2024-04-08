@@ -1,5 +1,5 @@
 <script setup lang="ts">
-
+useHead({title: "Product List"})
 const columns = [
   {
     key: 'title',
@@ -76,7 +76,6 @@ watch(q,() => {
 });
 </script>
 <template>
-  <title>Student List</title>
   <div>
     <div class="flex px-3 py-3.5 border-b border-gray-200 dark:border-gray-700">
       <UInput v-model="q" placeholder="Filter people..." />

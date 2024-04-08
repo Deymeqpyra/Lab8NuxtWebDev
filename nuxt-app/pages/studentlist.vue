@@ -1,7 +1,4 @@
 <script setup lang="ts">
-// import { ref, computed } from 'vue';
-
-
 
 const columns = [
   {
@@ -60,23 +57,8 @@ const q = ref('');
 const page = ref(1);
 const pageCount = 5;
 
-const filteredData = computed(() => {
-  if (!q.value) {
-    return productslist;
-  }
-
-  return productslist.filter((products) => {
-    return Object.values(products).some((value) => {
-      return String(value).toLowerCase().includes(q.value.toLowerCase());
-    });
-  });
-});
-
-
-
 const rows = computed(() => {
   let filteredProducts = [...sortedRows.value]
-
   if (q.value) {
     filteredProducts = filteredProducts.filter(product => {
       return Object.values(product).some(value => {
@@ -84,12 +66,11 @@ const rows = computed(() => {
       })
     })
   }
-
   const startIndex = (page.value - 1) * pageCount
   const endIndex = startIndex + pageCount
-
   return filteredProducts.slice(startIndex, endIndex)
-})
+});
+
 watch(q,() => {
   page.value = 1;
 });
@@ -108,7 +89,6 @@ watch(q,() => {
       <template #description-data="{row}">
         <div class="text-wrap">{{ row.description }}</div>
       </template>
-      <!-- Rating cell -->
       <template #rating-data="{row}">
         <div :class="{ 'bg-red-500/40': row.rating < 4.5, 'bg-green-500/40': row.rating >= 4.5 }" class="px-3 py-2">
           {{ row.rating }}

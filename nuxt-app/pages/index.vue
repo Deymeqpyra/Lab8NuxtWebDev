@@ -1,10 +1,10 @@
 <script setup lang="ts">
 
-import Studentlist from "~/pages/studentlist.vue";
+import BlogPostsUi from "~/pages/BlogPostsUi.vue";
 </script>
 
 <template>
-  <studentlist></studentlist>
+  <blog-posts-ui></blog-posts-ui>
 </template>
 
 <style scoped>
